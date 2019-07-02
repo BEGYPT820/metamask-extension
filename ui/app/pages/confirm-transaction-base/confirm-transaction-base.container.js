@@ -90,6 +90,8 @@ const mapStateToProps = (state, ownProps) => {
   const isTxReprice = Boolean(lastGasPrice)
   const transaction = R.find(({ id }) => id === (transactionId || Number(paramsTransactionId)))(selectedAddressTxList)
   const transactionStatus = transaction ? transaction.status : ''
+  const transactionGas = transaction ? transaction.gas : ''
+  const transactionGasPrice = transaction ? transaction.gasPrice : ''
 
   if (transaction && transaction.simulationFails) {
     txData.simulationFails = transaction.simulationFails
@@ -123,7 +125,7 @@ const mapStateToProps = (state, ownProps) => {
     fiatTransactionFee,
     fiatTransactionTotal,
     hexTransactionAmount,
-    hexTransactionFee,
+    hexTransactionFee: getHexGasTotal({ gasLimit: transactionGas, gasPrice: transactionGasPrice }),
     hexTransactionTotal,
     txData: Object.keys(txData).length ? txData : transaction || {},
     tokenData,
